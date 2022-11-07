@@ -20,7 +20,7 @@ def get_json(url,location):
     Both get_lat_long() and get_nearest_station() might need to use this function.
     """
     final = url + "?key="+ MAPQUEST_API_KEY + "&location=" + location
-    #Waprint (final)
+    print (final)
     with urllib.request.urlopen(final) as f:
         response_text = f.read().decode('utf-8')
         # j = json.loads(response_text) # j is a dictionary
@@ -29,7 +29,7 @@ def get_json(url,location):
         data = json.loads(response_text)
         # print(data)
         # print(type(data))
-        #pprint.pprint(data)
+        pprint.pprint(data)
         return data
 
 
@@ -45,8 +45,10 @@ def get_lat_long(place_name):
     See https://developer.mapquest.com/documentation/geocoding-api/address/get/
     for Mapquest Geocoding API URL formatting requirements.
     """
+    place_name = place_name.replace(" ","%20")
+    print(place_name)
     data = get_json(MAPQUEST_BASE_URL,place_name)
-    
+    pprint.pprint(data)
     return(data['results'][0]['locations'][0]['latLng'])
 
     
@@ -59,7 +61,8 @@ def get_nearest_station(latitude, longitude):
     See https://api-v3.mbta.com/docs/swagger/index.html#/Stop/ApiWeb_StopController_index for URL
     formatting requirements for the 'GET /stops' API.
     """
-    url = "https://api-v3.mbta.com/stops?api_key=" + MBTA_API_KEY+ "&filter%5Blatitude%5D=" + str(latitude) + "&filter%5Blongitude%5D=" + str(longitude) +"%22%20-H%20%22accept:%20application/vnd.api+json"
+    url = "https://api-v3.mbta.com/stops?api_key=" + MBTA_API_KEY + "&sort=distance&filter%5Blatitude%5D=" + str(latitude) + "&filter%5Blongitude%5D=" + str(longitude)
+
     #print(url)
     with urllib.request.urlopen(url) as f:
         response_text = f.read().decode('utf-8')
@@ -99,10 +102,10 @@ def main():
     
     """
     location = input("Choose a Location: ")
-    #get_json(MAPQUEST_BASE_URL,"Washington,DC")
-    #print(get_lat_long("location"))
-    #get_nearest_station(42.3601,71.0589)
-    print("The nearset stop is "+ str(find_stop_near("Washington,DC")))
+    #get_json(MAPQUEST_BASE_URL,location)
+    #print(get_lat_long(location))
+    #print(get_nearest_station(42.3551,-71.0657))
+    print("The nearset stop is "+ str(find_stop_near(location)))
 
 
 if __name__ == '__main__':

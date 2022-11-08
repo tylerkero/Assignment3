@@ -20,7 +20,7 @@ def get_json(url,location):
     Both get_lat_long() and get_nearest_station() might need to use this function.
     """
     final = url + "?key="+ MAPQUEST_API_KEY + "&location=" + location
-    print (final)
+    #print (final)
     with urllib.request.urlopen(final) as f:
         response_text = f.read().decode('utf-8')
         # j = json.loads(response_text) # j is a dictionary
@@ -29,7 +29,7 @@ def get_json(url,location):
         data = json.loads(response_text)
         # print(data)
         # print(type(data))
-        pprint.pprint(data)
+        #pprint.pprint(data)
         return data
 
 
@@ -46,7 +46,7 @@ def get_lat_long(place_name):
     for Mapquest Geocoding API URL formatting requirements.
     """
     place_name = place_name.replace(" ","%20")
-    print(place_name)
+    #print(place_name)
     data = get_json(MAPQUEST_BASE_URL,place_name)
     pprint.pprint(data)
     return(data['results'][0]['locations'][0]['latLng'])
@@ -103,8 +103,8 @@ def main():
     """
     location = input("Choose a Location: ")
     #get_json(MAPQUEST_BASE_URL,location)
-    #print(get_lat_long(location))
-    #print(get_nearest_station(42.3551,-71.0657))
+    print(get_lat_long(location))
+    print(get_nearest_station(42.35311, -71.06973))
     print("The nearset stop is "+ str(find_stop_near(location)))
 
 
